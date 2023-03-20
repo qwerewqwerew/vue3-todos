@@ -1,45 +1,39 @@
 <template>
-	<button class="btn btn-primary" v-on:click="consoleLog">Click</button>
-
-	<div class="name">
-		{{ name }}
-	</div>
-	<button class="btn btn-primary" v-on:click="updateName">Click</button>
-	<div class="name">
-		{{ cats }}
-	</div>
-	<button class="btn btn-primary" v-on:click="updateCats">Click</button>
+  <div :class="red">{{ name }}</div>
+  <!-- <input type="text" :value="name" @input="updateName" /> -->
+  <input type="text" v-model="name" />
+  <button class="btn-primary" @:click="onSubmit">click</button>
 </template>
 
 <script>
-import { ref,reactive  } from "vue";
+import { ref } from "vue";
+
 export default {
   setup() {
-		const consoleLog=()=>{
-		console.log("dddd")
-		}
-    let name = ref('망고');
-    let cats = reactive ({
-			name:"나초",
-			age:8,
-			weight:10
-		});
-    const updateName = () => {
-      name.value = '딴딴이';
+    const name = ref("김망고");
+
+    const onSubmit = () => {
+      console.log(name.value);
     };
-    const updateCats = () => {
-      cats.name = '나기',
-      cats.age = 5,
-      cats.weight = 5
-    };
+    /*     const updateName = (e) => {
+      console.log(e.target.value);
+      name.value = e.target.value;
+    }; */
 
     return {
       name,
-      updateName,
-			consoleLog,
-			cats,
-			updateCats,
+      onSubmit,
+      /* updateName, */
     };
-  }
-}
+  },
+};
 </script>
+
+<style>
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
+</style>
