@@ -1,31 +1,45 @@
 <template>
-	<div class="hi">안녕하세요{{ name }}</div>
-	<div class="hi">안녕하세요{{ name }}</div>
-	<div class="hi">안녕하세요{{ name }}</div>
-	<div class="hi">안녕하세요{{ name }}</div>
-	<h1>{{ greeting("Vue") }}</h1>
+	<button class="btn btn-primary" v-on:click="consoleLog">Click</button>
+
+	<div class="name">
+		{{ name }}
+	</div>
+	<button class="btn btn-primary" v-on:click="updateName">Click</button>
+	<div class="name">
+		{{ cats }}
+	</div>
+	<button class="btn btn-primary" v-on:click="updateCats">Click</button>
 </template>
 
 <script>
-	export default {
-		setup() {
-			const name = "Manao";
-			const greeting = (name) => {
-				return "정말쉽다" + name;
-			};
-			return {
-				name,
-				greeting,
-			};
-		},
-	};
-</script>
+import { ref,reactive  } from "vue";
+export default {
+  setup() {
+		const consoleLog=()=>{
+		console.log("dddd")
+		}
+    let name = ref('망고');
+    let cats = reactive ({
+			name:"나초",
+			age:8,
+			weight:10
+		});
+    const updateName = () => {
+      name.value = '딴딴이';
+    };
+    const updateCats = () => {
+      cats.name = '나기',
+      cats.age = 5,
+      cats.weight = 5
+    };
 
-<style>
-	body {
-		background: yellow;
-	}
-	.hi {
-		color: green;
-	}
-</style>
+    return {
+      name,
+      updateName,
+			consoleLog,
+			cats,
+			updateCats,
+    };
+  }
+}
+</script>
