@@ -1,8 +1,29 @@
 <template>
-  <div :class="red">{{ name }}</div>
-  <!-- <input type="text" :value="name" @input="updateName" /> -->
-  <input type="text" v-model="name" />
-  <button class="btn-primary" @:click="onSubmit">click</button>
+  <div class="container">
+    <h1>오늘의 할일</h1>
+    <form action="#" class="d-flex" @:submit.prevent="onSubmit">
+      <div class="input-group mb-2">
+        <input
+          class="form-control"
+          type="text"
+          v-model="todo"
+          placeholder="할일을 추가하세요"
+        />
+        <button class="btn btn-primary" type="submit">추가하기</button>
+      </div>
+    </form>
+    <!-- {{ tolist }} -->
+    <div class="card mb-2">
+      <div class="card-body p-2">
+        {{ tolist[0].subject }}
+      </div>
+    </div>
+    <div class="card mb-2">
+      <div class="card-body p-2">
+        {{ tolist[1].subject }}
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -10,20 +31,24 @@ import { ref } from "vue";
 
 export default {
   setup() {
-    const name = ref("김망고");
+    const todo = ref("");
+    const tolist = ref([
+      { id: 1, subject: "리액트 공부" },
+      { id: 2, subject: "자바스크립트 공부" },
+    ]);
 
     const onSubmit = () => {
-      console.log(name.value);
+      console.log(todo.value);
+      tolist.value.push({
+        id: Date.now(),
+        subject: todo.value,
+      });
     };
-    /*     const updateName = (e) => {
-      console.log(e.target.value);
-      name.value = e.target.value;
-    }; */
 
     return {
-      name,
+      todo,
       onSubmit,
-      /* updateName, */
+      tolist,
     };
   },
 };
@@ -32,8 +57,5 @@ export default {
 <style>
 .red {
   color: red;
-}
-.green {
-  color: green;
 }
 </style>
