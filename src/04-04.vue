@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <!--     <div v-show="toggle">show</div>
+    <div v-show="!toggle">hide</div>
+ -->
     <div v-if="toggle">show</div>
     <div v-else>hide</div>
     <button @click="ontoggle">토글버튼</button>
@@ -18,17 +21,7 @@
     </form>
     <div class="card mb-2">
       <div v-for="i in tolist" :key="i.id" class="card-body p-2">
-        <div class="form-check">
-          <!-- <label class="form-check-label" :style="i.complated ? todoStyle : {}"> -->
-          <label class="form-check-label" :class="{ todo: i.complated }">
-            {{ i.subject }}
-            <input
-              v-model="i.complated"
-              type="checkbox"
-              class="form-check-input"
-            />
-          </label>
-        </div>
+        {{ i.subject }}
       </div>
     </div>
   </div>
@@ -42,12 +35,10 @@ export default {
     const toggle = ref(false);
     const todo = ref("");
     const errMsg = ref(false);
-    //tolist의 초기값을 삭제
-    const tolist = ref([]);
-    const todoStyle = {
-      textDecoration: "line-through",
-      color: "gray",
-    };
+    const tolist = ref([
+      { id: 1, subject: "리액트 공부" },
+      { id: 2, subject: "자바스크립트 공부" },
+    ]);
 
     const onSubmit = () => {
       if (todo.value === "") {
@@ -56,13 +47,9 @@ export default {
         tolist.value.push({
           id: Date.now(),
           subject: todo.value,
-          //complated 추가 -> 초기에는 체크되지 않은 상태로 false를 넣는다
-          complated: false,
         });
         errMsg.value = false;
-        todo.value = "";
       }
-      console.log(tolist.value);
     };
     const ontoggle = () => {
       toggle.value = !toggle.value;
@@ -74,15 +61,13 @@ export default {
       toggle,
       ontoggle,
       errMsg,
-      todoStyle,
     };
   },
 };
 </script>
 
 <style>
-.todo {
-  color: gray;
-  text-decoration: line-through;
+.red {
+  color: red;
 }
 </style>
