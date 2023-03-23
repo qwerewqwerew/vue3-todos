@@ -1,9 +1,19 @@
 <template>
   <div class="container">
     <h1>오늘의 할일</h1>
-    <TodoBasicForm @add-todo="onSubmit" />
+    <form action="#" @:submit.prevent="onSubmit">
+      <div class="input-group mb-2">
+        <input
+          class="form-control"
+          type="text"
+          v-model="todo"
+          placeholder="할일을 추가하세요"
+        />
+        <button class="btn btn-primary" type="submit">추가하기</button>
+      </div>
+      <div v-if="errMsg" class="alert alert-danger">할일을 입력해주세요</div>
+    </form>
     <div v-if="!tolist.length">등록된 일정이 없습니다</div>
-
     <div class="card mb-2">
       <div
         v-for="i in tolist"
@@ -32,18 +42,13 @@
 
 <script>
 import { ref } from "vue";
-import TodoBasicForm from "./components/TodoBasicForm.vue";
+
 export default {
-  components: {
-    TodoBasicForm,
-  },
   setup() {
     const toggle = ref(false);
+    const todo = ref("");
+    const errMsg = ref(false);
     const tolist = ref([]);
-    const onSubmit = (todo) => {
-      console.log(todo);
-      tolist.value.push(todo);
-    };
     const todoStyle = {
       textDecoration: "line-through",
       color: "gray",
@@ -51,8 +56,34 @@ export default {
     const deleteTodo = (data) => {
       tolist.value.splice(data, 1);
     };
+    const onSubmit = () => {
+      if (todo.value === "") {
+        errMsg.value = true;
+      } else {
+        tolist.value.push({
+          id: Date.now(),
+          subject: todo.value,
+          complated: false,
+        });
+        errMsg.value = false;
+        todo.value = "";
+      }
+      console.log(tolist.value);
+    };
+    const ontoggle = () => {
+      toggle.value = !toggle.value;
+    };
 
-    return { onSubmit, tolist, toggle, todoStyle, deleteTodo };
+    return {
+      todo,
+      onSubmit,
+      tolist,
+      toggle,
+      ontoggle,
+      errMsg,
+      todoStyle,
+      deleteTodo,
+    };
   },
 };
 </script>
