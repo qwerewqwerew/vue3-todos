@@ -3,11 +3,7 @@
     <h1>오늘의 할일</h1>
     <TodoBasicForm @add-todo="onSubmit" />
     <div v-if="!tolist.length">등록된 일정이 없습니다</div>
-    <TodoList
-      :tolist="tolist"
-      @toggle-todo="toggleTodo"
-      @delete-todo="deleteTodo"
-    />
+    <TodoList :tolist="tolist" />
   </div>
 </template>
 
@@ -17,29 +13,24 @@ import TodoBasicForm from "./components/TodoBasicForm.vue";
 import TodoList from "./components/TodoList.vue";
 export default {
   components: {
-    TodoBasicForm,
-    TodoList,
+    TodoBasicForm,TodoList
   },
   setup() {
     const toggle = ref(false);
     const tolist = ref([]);
     const onSubmit = (todo) => {
+      console.log(todo);
       tolist.value.push(todo);
     };
     const todoStyle = {
       textDecoration: "line-through",
       color: "gray",
     };
-    const deleteTodo = (index) => {
-      console.log(index);
-      tolist.value.splice(index, 1);
-    };
-    const toggleTodo = (index) => {
-      console.log(index);
-      tolist.value[index].completed = !tolist.value[index].completed;
+    const deleteTodo = (data) => {
+      tolist.value.splice(data, 1);
     };
 
-    return { onSubmit, tolist, toggle, todoStyle, deleteTodo, toggleTodo };
+    return { onSubmit, tolist, toggle, todoStyle, deleteTodo };
   },
 };
 </script>

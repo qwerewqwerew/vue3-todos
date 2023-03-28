@@ -16,7 +16,7 @@
 <script>
 import { ref } from "vue";
 export default {
-  setup(props, {emit}) {
+  setup(props, context) {
     const todo = ref("");
     const errMsg = ref(false);
     const onSubmit = () => {
@@ -24,7 +24,7 @@ export default {
         errMsg.value = true;
       } else {
         //emit('이벤트명',{전달할데이터})
-        emit("add-todo", {
+        context.emit("add-todo", {
           id: Date.now(),
           subject: todo.value,
           complated: false,
