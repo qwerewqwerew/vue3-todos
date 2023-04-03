@@ -9,7 +9,6 @@
     />
     <hr />
     <TodoBasicForm @add-todo="onSubmit" />
-    <div style="color: red">{{ error }}</div>
     <div v-if="!tolist.length">등록된 일정이 없습니다</div>
     <div v-if="!filteredTodos.length">검색결과가 없습니다</div>
     <TodoList
@@ -21,7 +20,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { ref, computed } from "vue";
 import TodoBasicForm from "./components/TodoBasicForm.vue";
 import TodoList from "./components/TodoList.vue";
@@ -31,7 +29,6 @@ export default {
     TodoList,
   },
   setup() {
-    const error = ref("");
     const toggle = ref(false);
     const tolist = ref([]);
     const searchText = ref("");
@@ -43,37 +40,10 @@ export default {
       }
       return tolist.value;
     });
-    const getTodos = () => {
-      axios
-        .get("http://localhost:3000/todos")
-        .then((res) => {
-          console.log("aa",res);
-          tolist.value = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-          error.value =
-            "일시적으로 오류가 발생했습니다. 잠시후 다시 이용해주세요";
-        });
-    };
-    getTodos();
     const onSubmit = (todo) => {
-      error.value = "";
-      axios
-        .post("http://localhost:3000/todos", {
-          subject: todo.subject,
-          completed: todo.completed,
-        })
-        .then((res) => {
-          return [console.log("res", res), tolist.value.push(res.data)];
-        })
-        .catch((err) => {
-          console.log(err);
-          error.value =
-            "일시적으로 오류가 발생했습니다. 잠시후 다시 이용해주세요";
-        });
+      //데이터베이스에 todo 데이터를 저장
+      tolist.value.push(todo);
     };
-
     const todoStyle = {
       textDecoration: "line-through",
       color: "gray",
@@ -96,7 +66,6 @@ export default {
       toggleTodo,
       searchText,
       filteredTodos,
-      error,
     };
   },
 };

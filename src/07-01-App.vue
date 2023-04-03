@@ -9,7 +9,7 @@
     />
     <hr />
     <TodoBasicForm @add-todo="onSubmit" />
-    <div style="color: red">{{ error }}</div>
+    <div style="color:red">{{error}}</div>
     <div v-if="!tolist.length">등록된 일정이 없습니다</div>
     <div v-if="!filteredTodos.length">검색결과가 없습니다</div>
     <TodoList
@@ -43,20 +43,6 @@ export default {
       }
       return tolist.value;
     });
-    const getTodos = () => {
-      axios
-        .get("http://localhost:3000/todos")
-        .then((res) => {
-          console.log("aa",res);
-          tolist.value = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-          error.value =
-            "일시적으로 오류가 발생했습니다. 잠시후 다시 이용해주세요";
-        });
-    };
-    getTodos();
     const onSubmit = (todo) => {
       error.value = "";
       axios
@@ -69,11 +55,9 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-          error.value =
-            "일시적으로 오류가 발생했습니다. 잠시후 다시 이용해주세요";
+          error.value="일시적으로 오류가 발생했습니다. 잠시후 다시 이용해주세요"
         });
     };
-
     const todoStyle = {
       textDecoration: "line-through",
       color: "gray",
@@ -96,7 +80,7 @@ export default {
       toggleTodo,
       searchText,
       filteredTodos,
-      error,
+      error
     };
   },
 };
