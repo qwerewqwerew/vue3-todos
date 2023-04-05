@@ -20,7 +20,7 @@
       <div v-if="errMsg" class="alert alert-danger">할일을 입력해주세요</div>
     </form>
     <div class="card mb-2">
-      <div v-for="i in tolist" :key="i.id" class="card-body p-2">
+      <div v-for="i in todos" :key="i.id" class="card-body p-2">
         {{ i.subject }}
       </div>
     </div>
@@ -35,7 +35,7 @@ export default {
     const toggle = ref(false);
     const todo = ref("");
     const errMsg = ref(false);
-    const tolist = ref([
+    const todos = ref([
       { id: 1, subject: "리액트 공부" },
       { id: 2, subject: "자바스크립트 공부" },
     ]);
@@ -44,7 +44,7 @@ export default {
       if (todo.value === "") {
         errMsg.value = true;
       } else {
-        tolist.value.push({
+        todos.value.push({
           id: Date.now(),
           subject: todo.value,
         });
@@ -57,7 +57,7 @@ export default {
     return {
       todo,
       onSubmit,
-      tolist,
+      todos,
       toggle,
       ontoggle,
       errMsg,

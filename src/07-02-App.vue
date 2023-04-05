@@ -10,10 +10,10 @@
     <hr />
     <TodoBasicForm @add-todo="onSubmit" />
     <div style="color: red">{{ error }}</div>
-    <div v-if="!tolist.length">등록된 일정이 없습니다</div>
+    <div v-if="!todos.length">등록된 일정이 없습니다</div>
     <div v-if="!filteredTodos.length">검색결과가 없습니다</div>
     <TodoList
-      :tolist="filteredTodos"
+      :todos="filteredTodos"
       @toggle-todo="toggleTodo"
       @delete-todo="deleteTodo"
     />
@@ -33,22 +33,22 @@ export default {
   setup() {
     const error = ref("");
     const toggle = ref(false);
-    const tolist = ref([]);
+    const todos = ref([]);
     const searchText = ref("");
     const filteredTodos = computed(() => {
       if (searchText.value) {
-        return tolist.value.filter((todo) => {
+        return todos.value.filter((todo) => {
           return todo.subject.includes(searchText.value);
         });
       }
-      return tolist.value;
+      return todos.value;
     });
     const getTodos = () => {
       axios
         .get("http://localhost:3000/todos")
         .then((res) => {
           console.log("aa",res);
-          tolist.value = res.data;
+          todos.value = res.data;
         })
         .catch((err) => {
           console.log(err);
@@ -65,7 +65,7 @@ export default {
           completed: todo.completed,
         })
         .then((res) => {
-          return [console.log("res", res), tolist.value.push(res.data)];
+          return [console.log("res", res), todos.value.push(res.data)];
         })
         .catch((err) => {
           console.log(err);
@@ -80,16 +80,16 @@ export default {
     };
     const deleteTodo = (index) => {
       console.log(index);
-      tolist.value.splice(index, 1);
+      todos.value.splice(index, 1);
     };
     const toggleTodo = (index) => {
       console.log(index);
-      tolist.value[index].completed = !tolist.value[index].completed;
+      todos.value[index].completed = !todos.value[index].completed;
     };
 
     return {
       onSubmit,
-      tolist,
+      todos,
       toggle,
       todoStyle,
       deleteTodo,

@@ -2,11 +2,11 @@
   <div class="container">
     <h1>오늘의 할일</h1>
     <TodoBasicForm @add-todo="onSubmit" />
-    <div v-if="!tolist.length">등록된 일정이 없습니다</div>
+    <div v-if="!todos.length">등록된 일정이 없습니다</div>
 
     <div class="card mb-2">
       <div
-        v-for="i in tolist"
+        v-for="i in todos"
         :key="i.id"
         class="card-body p-2 d-flex align-items-center"
       >
@@ -39,20 +39,20 @@ export default {
   },
   setup() {
     const toggle = ref(false);
-    const tolist = ref([]);
+    const todos = ref([]);
     const onSubmit = (todo) => {
       console.log(todo);
-      tolist.value.push(todo);
+      todos.value.push(todo);
     };
     const todoStyle = {
       textDecoration: "line-through",
       color: "gray",
     };
     const deleteTodo = (data) => {
-      tolist.value.splice(data, 1);
+      todos.value.splice(data, 1);
     };
 
-    return { onSubmit, tolist, toggle, todoStyle, deleteTodo };
+    return { onSubmit, todos, toggle, todoStyle, deleteTodo };
   },
 };
 </script>

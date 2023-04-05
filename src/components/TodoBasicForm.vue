@@ -16,7 +16,7 @@
 <script>
 import { ref } from "vue";
 export default {
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const todo = ref("");
     const errMsg = ref(false);
     const onSubmit = () => {

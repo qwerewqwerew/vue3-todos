@@ -9,10 +9,10 @@
     />
     <hr />
     <TodoBasicForm @add-todo="onSubmit" />
-    <div v-if="!tolist.length">등록된 일정이 없습니다</div>
+    <div v-if="!todos.length">등록된 일정이 없습니다</div>
     <div v-if="!filteredTodos.length">검색결과가 없습니다</div>
     <TodoList
-      :tolist="filteredTodos"
+      :todos="filteredTodos"
       @toggle-todo="toggleTodo"
       @delete-todo="deleteTodo"
     />
@@ -30,19 +30,19 @@ export default {
   },
   setup() {
     const toggle = ref(false);
-    const tolist = ref([]);
+    const todos = ref([]);
     const searchText = ref("");
     const filteredTodos = computed(() => {
       if (searchText.value) {
-        return tolist.value.filter((todo) => {
+        return todos.value.filter((todo) => {
           return todo.subject.includes(searchText.value);
         });
       }
-      return tolist.value;
+      return todos.value;
     });
     const onSubmit = (todo) => {
       //데이터베이스에 todo 데이터를 저장
-      tolist.value.push(todo);
+      todos.value.push(todo);
     };
     const todoStyle = {
       textDecoration: "line-through",
@@ -50,16 +50,16 @@ export default {
     };
     const deleteTodo = (index) => {
       console.log(index);
-      tolist.value.splice(index, 1);
+      todos.value.splice(index, 1);
     };
     const toggleTodo = (index) => {
       console.log(index);
-      tolist.value[index].completed = !tolist.value[index].completed;
+      todos.value[index].completed = !todos.value[index].completed;
     };
 
     return {
       onSubmit,
-      tolist,
+      todos,
       toggle,
       todoStyle,
       deleteTodo,

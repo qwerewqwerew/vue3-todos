@@ -12,15 +12,15 @@
         <button class="btn btn-primary" type="submit">추가하기</button>
       </div>
     </form>
-    <!-- {{ tolist }} -->
+    <!-- {{ todos }} -->
     <div class="card mb-2">
       <div class="card-body p-2">
-        {{ tolist[0].subject }}
+        {{ todos[0].subject }}
       </div>
     </div>
     <div class="card mb-2">
       <div class="card-body p-2">
-        {{ tolist[1].subject }}
+        {{ todos[1].subject }}
       </div>
     </div>
   </div>
@@ -32,14 +32,14 @@ import { ref } from "vue";
 export default {
   setup() {
     const todo = ref("");
-    const tolist = ref([
+    const todos = ref([
       { id: 1, subject: "리액트 공부" },
       { id: 2, subject: "자바스크립트 공부" },
     ]);
 
     const onSubmit = () => {
       console.log(todo.value);
-      tolist.value.push({
+      todos.value.push({
         id: Date.now(),
         subject: todo.value,
       });
@@ -48,7 +48,7 @@ export default {
     return {
       todo,
       onSubmit,
-      tolist,
+      todos,
     };
   },
 };

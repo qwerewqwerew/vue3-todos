@@ -13,10 +13,10 @@
       </div>
       <div v-if="errMsg" class="alert alert-danger">할일을 입력해주세요</div>
     </form>
-    <div v-if="!tolist.length">등록된 일정이 없습니다</div>
+    <div v-if="!todos.length">등록된 일정이 없습니다</div>
     <div class="card mb-2">
       <div
-        v-for="i in tolist"
+        v-for="i in todos"
         :key="i.id"
         class="card-body p-2 d-flex align-items-center"
       >
@@ -48,19 +48,19 @@ export default {
     const toggle = ref(false);
     const todo = ref("");
     const errMsg = ref(false);
-    const tolist = ref([]);
+    const todos = ref([]);
     const todoStyle = {
       textDecoration: "line-through",
       color: "gray",
     };
     const deleteTodo = (data) => {
-      tolist.value.splice(data, 1);
+      todos.value.splice(data, 1);
     };
     const onSubmit = () => {
       if (todo.value === "") {
         errMsg.value = true;
       } else {
-        tolist.value.push({
+        todos.value.push({
           id: Date.now(),
           subject: todo.value,
           complated: false,
@@ -68,7 +68,7 @@ export default {
         errMsg.value = false;
         todo.value = "";
       }
-      console.log(tolist.value);
+      console.log(todos.value);
     };
     const ontoggle = () => {
       toggle.value = !toggle.value;
@@ -77,7 +77,7 @@ export default {
     return {
       todo,
       onSubmit,
-      tolist,
+      todos,
       toggle,
       ontoggle,
       errMsg,

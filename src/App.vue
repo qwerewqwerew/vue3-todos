@@ -10,10 +10,10 @@
     <hr />
     <TodoBasicForm @add-todo="onSubmit" />
     <div style="color: red">{{ error }}</div>
-    <div v-if="!tolist.length">등록된 일정이 없습니다</div>
+    <div v-if="!todos.length">등록된 일정이 없습니다</div>
     <div v-if="!filteredTodos.length">검색결과가 없습니다</div>
     <TodoList
-      :tolist="filteredTodos"
+      :todos="filteredTodos"
       @toggle-todo="toggleTodo"
       @delete-todo="deleteTodo"
     />
@@ -33,26 +33,24 @@ export default {
   setup() {
     const error = ref("");
     const toggle = ref(false);
-    const tolist = ref([]);
+    const todos = ref([]);
     const searchText = ref("");
     const filteredTodos = computed(() => {
       if (searchText.value) {
-        return tolist.value.filter((todo) => {
+        return todos.value.filter((todo) => {
           return todo.subject.includes(searchText.value);
         });
       }
-      return tolist.value;
+      return todos.value;
     });
     const getTodos = () => {
       axios
         .get("http://localhost:3000/todos")
         .then((res) => {
-          console.log("aa",res);
-          tolist.value = res.data;
+          todos.value = res.data;
         })
         .catch((err) => {
-          console.log(err);
-          error.value =
+          err.value =
             "일시적으로 오류가 발생했습니다. 잠시후 다시 이용해주세요";
         });
     };
@@ -62,14 +60,14 @@ export default {
       axios
         .post("http://localhost:3000/todos", {
           subject: todo.subject,
-          completed: todo.completed,
+          completed: todo.complated,
         })
         .then((res) => {
-          return [console.log("res", res), tolist.value.push(res.data)];
+          console.log(res.data);
+          todos.value.push(res.data);
         })
         .catch((err) => {
-          console.log(err);
-          error.value =
+          err.value =
             "일시적으로 오류가 발생했습니다. 잠시후 다시 이용해주세요";
         });
     };
@@ -78,18 +76,42 @@ export default {
       textDecoration: "line-through",
       color: "gray",
     };
-    const deleteTodo = (index) => {
-      console.log(index);
-      tolist.value.splice(index, 1);
+
+    const deleteTodo = async (index) => {
+      error.value = "";
+      const id = todos.value[index].id;
+      axios
+        .delete("http://localhost:3000/todos/" + id)
+        .then(() => {
+          alert(id);
+          todos.value.splice(index, 1);
+        })
+        .catch(() => {
+          error.value =
+            "일시적으로 오류가 발생했습니다. 잠시후 다시 이용해주세요";
+        });
     };
+
     const toggleTodo = (index) => {
-      console.log(index);
-      tolist.value[index].completed = !tolist.value[index].completed;
+      error.value = "";
+      const id = todos.value[index].id;
+      console.log(todos.value[index].completed);
+      axios
+        .patch("http://localhost:3000/todos/" + id, {
+          completed: !todos.value[index].completed,
+        })
+        .then(() => {
+          todos.value[index].completed = !todos.value[index].completed;
+        })
+        .catch(() => {
+          error.value =
+            "일시적으로 오류가 발생했습니다. 잠시후 다시 이용해주세요";
+        });
     };
 
     return {
       onSubmit,
-      tolist,
+      todos,
       toggle,
       todoStyle,
       deleteTodo,

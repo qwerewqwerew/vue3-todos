@@ -2,9 +2,9 @@
   <div class="container">
     <h1>오늘의 할일</h1>
     <TodoBasicForm @add-todo="onSubmit" />
-    <div v-if="!tolist.length">등록된 일정이 없습니다</div>
+    <div v-if="!todos.length">등록된 일정이 없습니다</div>
     <TodoList
-      :tolist="tolist"
+      :todos="todos"
       @toggle-todo="toggleTodo"
       @delete-todo="deleteTodo"
     />
@@ -22,9 +22,9 @@ export default {
   },
   setup() {
     const toggle = ref(false);
-    const tolist = ref([]);
+    const todos = ref([]);
     const onSubmit = (todo) => {
-      tolist.value.push(todo);
+      todos.value.push(todo);
     };
     const todoStyle = {
       textDecoration: "line-through",
@@ -32,14 +32,14 @@ export default {
     };
     const deleteTodo = (index) => {
       console.log(index);
-      tolist.value.splice(index, 1);
+      todos.value.splice(index, 1);
     };
     const toggleTodo = (index) => {
       console.log(index);
-      tolist.value[index].completed = !tolist.value[index].completed;
+      todos.value[index].completed = !todos.value[index].completed;
     };
 
-    return { onSubmit, tolist, toggle, todoStyle, deleteTodo, toggleTodo };
+    return { onSubmit, todos, toggle, todoStyle, deleteTodo, toggleTodo };
   },
 };
 </script>
