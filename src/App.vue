@@ -20,7 +20,7 @@
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
         <li v-if="currentPage !== 1" class="page-item">
-          <a class="page-link" href="#"> Previous </a>
+          <a class="page-link" @click="getTodos(currentPage - 1)"> 이전 </a>
         </li>
         <li
           v-for="page in numberOfPages"
@@ -28,14 +28,14 @@
           class="page-item"
           :class="currentPage === page ? 'active' : ''"
         >
-          <a class="page-link" href="#">{{ page }}</a>
+          <a class="page-link" @click="getTodos(page)">{{ page }}</a>
         </li>
         <li v-if="numberOfPages !== currentPage" class="page-item">
-          <a class="page-link" href="#">Next</a>
+          <a class="page-link" @click="getTodos(currentPage + 1)">다음</a>
         </li>
       </ul>
     </nav>
-    {{ numberOfPages }}
+    <!-- {{ numberOfPages }} -->
   </div>
 </template>
 
@@ -68,11 +68,10 @@ export default {
       }
       return todos.value;
     });
-    const getTodos = () => {
+    const getTodos = (page = currentPage.value) => {
+      currentPage.value = page;
       axios
-        .get(
-          `http://localhost:3000/todos?_page=${currentPage.value}&_limit=${limit}`
-        )
+        .get(`http://localhost:3000/todos?_page=${page}&_limit=${limit}`)
         .then((res) => {
           totalTodos.value = res.headers["x-total-count"];
           console.log(res.headers["x-total-count"]);
@@ -150,6 +149,7 @@ export default {
       error,
       numberOfPages,
       currentPage,
+      getTodos,
     };
   },
 };
@@ -160,4 +160,5 @@ export default {
   color: gray;
   text-decoration: line-through;
 }
+.page-item a{cursor:pointer}
 </style>
