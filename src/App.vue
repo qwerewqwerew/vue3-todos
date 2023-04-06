@@ -17,6 +17,25 @@
       @toggle-todo="toggleTodo"
       @delete-todo="deleteTodo"
     />
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li v-if="currentPage !== 1" class="page-item">
+          <a class="page-link" href="#"> Previous </a>
+        </li>
+        <li
+          v-for="page in numberOfPages"
+          :key="page"
+          class="page-item"
+          :class="currentPage === page ? 'active' : ''"
+        >
+          <a class="page-link" href="#">{{ page }}</a>
+        </li>
+        <li v-if="numberOfPages !== currentPage" class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+    {{ numberOfPages }}
   </div>
 </template>
 
@@ -35,6 +54,12 @@ export default {
     const toggle = ref(false);
     const todos = ref([]);
     const searchText = ref("");
+    const totalTodos = ref(0);
+    const limit = 5;
+    const currentPage = ref(1);
+    const numberOfPages = computed(() => {
+      return Math.ceil(totalTodos.value / limit);
+    });
     const filteredTodos = computed(() => {
       if (searchText.value) {
         return todos.value.filter((todo) => {
@@ -45,8 +70,12 @@ export default {
     });
     const getTodos = () => {
       axios
-        .get("http://localhost:3000/todos")
+        .get(
+          `http://localhost:3000/todos?_page=${currentPage.value}&_limit=${limit}`
+        )
         .then((res) => {
+          totalTodos.value = res.headers["x-total-count"];
+          console.log(res.headers["x-total-count"]);
           todos.value = res.data;
         })
         .catch((err) => {
@@ -77,7 +106,7 @@ export default {
       color: "gray",
     };
 
-    const deleteTodo = async (index) => {
+    const deleteTodo = (index) => {
       error.value = "";
       const id = todos.value[index].id;
       axios
@@ -119,6 +148,8 @@ export default {
       searchText,
       filteredTodos,
       error,
+      numberOfPages,
+      currentPage,
     };
   },
 };
