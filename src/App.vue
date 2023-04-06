@@ -35,13 +35,12 @@
         </li>
       </ul>
     </nav>
-    <!-- {{ numberOfPages }} -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import { ref, computed } from "vue";
+import { ref, computed, watchEffect /* reactive */ } from "vue";
 import TodoBasicForm from "./components/TodoBasicForm.vue";
 import TodoList from "./components/TodoList.vue";
 export default {
@@ -55,8 +54,21 @@ export default {
     const todos = ref([]);
     const searchText = ref("");
     const totalTodos = ref(0);
-    const limit = 5;
+    let limit = 5;
     const currentPage = ref(1);
+    watchEffect(() => {
+      console.log(limit);
+      // console.log("currentPage", currentPage.value);
+      // console.log("totalTodos", totalTodos.value);
+    });
+
+    /*
+    const a = reactive({ b: 1 });
+    watchEffect(() => {
+      console.log(a.b);
+    });
+    a.b = 4;
+ */
     const numberOfPages = computed(() => {
       return Math.ceil(totalTodos.value / limit);
     });
@@ -74,7 +86,7 @@ export default {
         .get(`http://localhost:3000/todos?_page=${page}&_limit=${limit}`)
         .then((res) => {
           totalTodos.value = res.headers["x-total-count"];
-          console.log(res.headers["x-total-count"]);
+
           todos.value = res.data;
         })
         .catch((err) => {
@@ -160,5 +172,7 @@ export default {
   color: gray;
   text-decoration: line-through;
 }
-.page-item a{cursor:pointer}
+.page-item a {
+  cursor: pointer;
+}
 </style>
