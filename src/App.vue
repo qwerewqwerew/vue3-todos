@@ -1,23 +1,24 @@
 <template>
-	<div class="hi">안녕하세요{{ name }}</div>
+  <Navbar />
+  <div class="container">
+      <router-view/>
+  </div>
+  
+  <Toast />
 </template>
 
 <script>
-	export default {
-		setup() {
-			const name = "Manao";
-			return {
-				name,
-			};
-		},
-	};
+import Toast from '@/components/Toast.vue';
+import Navbar from '@/components/Navbar.vue';
+
+export default {
+  components: {
+    Toast,
+    Navbar
+  },
+}
 </script>
 
-<style>
-	body {
-		background: yellow;
-	}
-	.hi {
-		color: green;
-	}
+<style scoped>
+
 </style>
