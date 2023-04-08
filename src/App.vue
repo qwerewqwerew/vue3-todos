@@ -40,7 +40,7 @@
 
 <script>
 import axios from "axios";
-import { ref, computed, watchEffect /* reactive */ } from "vue";
+import { ref, computed, /* watchEffect, */ watch, reactive } from "vue";
 import TodoBasicForm from "./components/TodoBasicForm.vue";
 import TodoList from "./components/TodoList.vue";
 export default {
@@ -56,19 +56,27 @@ export default {
     const totalTodos = ref(0);
     let limit = 5;
     const currentPage = ref(1);
-    watchEffect(() => {
-      console.log(limit);
-      // console.log("currentPage", currentPage.value);
-      // console.log("totalTodos", totalTodos.value);
-    });
 
-    /*
-    const a = reactive({ b: 1 });
-    watchEffect(() => {
-      console.log(a.b);
+    //watchEffect(() => {
+    //  console.log(limit);
+    // console.log("currentPage", currentPage.value);
+    // console.log("totalTodos", totalTodos.value);
+    //});
+
+    const a = reactive({ b: "안", c: "잘" });
+
+    watch(
+      () => {
+       return [a.b, a.c]
+      },
+      (current, prev) => {
+        console.log(current, prev);
+      }
+    );
+    a.b = "녕";
+    watch(currentPage, (currentPage, prev) => {
+      console.log(currentPage, prev);
     });
-    a.b = 4;
- */
     const numberOfPages = computed(() => {
       return Math.ceil(totalTodos.value / limit);
     });
