@@ -2,7 +2,7 @@ import { createRouter,createWebHistory } from 'vue-router';
 import Home from '../pages/index.vue';
 import Todos from '../pages/todos/index.vue';
 
-const router = createRouter({
+const link = createRouter({
   history: createWebHistory(),
   routes: [
     {
@@ -20,4 +20,4 @@ const router = createRouter({
 
 
 
-export default router;
+export default link;
