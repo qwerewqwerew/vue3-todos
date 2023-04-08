@@ -6,15 +6,14 @@
       type="text"
       v-model="searchText"
       placeholder="Search"
-      @keyup.enter="searchTodo"
     />
     <hr />
     <TodoBasicForm @add-todo="onSubmit" />
     <div style="color: red">{{ error }}</div>
     <div v-if="!todos.length">등록된 일정이 없습니다</div>
-    <div v-if="!todos.length">검색결과가 없습니다</div>
+    <div v-if="!filteredTodos.length">검색결과가 없습니다</div>
     <TodoList
-      :todos="todos"
+      :todos="filteredTodos"
       @toggle-todo="toggleTodo"
       @delete-todo="deleteTodo"
     />
@@ -40,8 +39,8 @@
 </template>
 
 <script>
-import { ref, computed, watch } from "vue";
 import axios from "axios";
+import { ref, computed, /* watchEffect, */ watch, reactive } from "vue";
 import TodoBasicForm from "./components/TodoBasicForm.vue";
 import TodoList from "./components/TodoList.vue";
 export default {
@@ -58,29 +57,44 @@ export default {
     let limit = 5;
     const currentPage = ref(1);
 
-    let timeout = null;
-    const searchTodo = () => {
-      clearTimeout(timeout);
-      getTodos(1);
-    };
-    watch(searchText, () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        getTodos(1);
-      }, 2000);
+    //watchEffect(() => {
+    //  console.log(limit);
+    // console.log("currentPage", currentPage.value);
+    // console.log("totalTodos", totalTodos.value);
+    //});
+
+    const a = reactive({ b: "안", c: "잘" });
+
+    watch(
+      () => {
+       return [a.b, a.c]
+      },
+      (current, prev) => {
+        console.log(current, prev);
+      }
+    );
+    a.b = "녕";
+    watch(currentPage, (currentPage, prev) => {
+      console.log(currentPage, prev);
     });
     const numberOfPages = computed(() => {
       return Math.ceil(totalTodos.value / limit);
     });
-
+    const filteredTodos = computed(() => {
+      if (searchText.value) {
+        return todos.value.filter((todo) => {
+          return todo.subject.includes(searchText.value);
+        });
+      }
+      return todos.value;
+    });
     const getTodos = (page = currentPage.value) => {
       currentPage.value = page;
       axios
-        .get(
-          `http://localhost:3000/todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
-        )
+        .get(`http://localhost:3000/todos?_page=${page}&_limit=${limit}`)
         .then((res) => {
           totalTodos.value = res.headers["x-total-count"];
+
           todos.value = res.data;
         })
         .catch((err) => {
@@ -96,9 +110,9 @@ export default {
           subject: todo.subject,
           completed: todo.complated,
         })
-        .then(() => {
-          alert("목록이 등록 되었습니다");
-          getTodos(1);
+        .then((res) => {
+          console.log(res.data);
+          todos.value.push(res.data);
         })
         .catch((err) => {
           err.value =
@@ -117,7 +131,7 @@ export default {
       axios
         .delete("http://localhost:3000/todos/" + id)
         .then(() => {
-          alert("삭제 되었습니다");
+          alert(id);
           todos.value.splice(index, 1);
         })
         .catch(() => {
@@ -151,7 +165,7 @@ export default {
       deleteTodo,
       toggleTodo,
       searchText,
-      searchTodo,
+      filteredTodos,
       error,
       numberOfPages,
       currentPage,
