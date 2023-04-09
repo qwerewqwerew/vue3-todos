@@ -40,18 +40,10 @@
 <script>
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
-import {
-  computed,
-  onBeforeMount,
-  onMounted,
-  onBeforeUpdate,
-  onUpdated,
-  onBeforeUnmount,
-  onUnmounted,
-} from "vue";
+import { computed, onUnmounted } from "vue";
 import { ref } from "@vue/reactivity";
 import Toast from "@/components/Toast.vue";
-
+import { useToast } from "@/composables/toast";
 import _ from "lodash";
 export default {
   components: {
@@ -65,10 +57,9 @@ export default {
     const loading = ref(true);
     const todoId = route.params.id;
     const url = "http://localhost:3000/todos/";
-    const showToast = ref(false);
-    const toastMessage = ref("");
-    const toastAlertType = ref("");
-    const timeout = ref(null);
+    const { toastMessage, toastAlertType, showToast, triggerToast } =
+      useToast();
+
     onUnmounted(() => {
       clearTimeout(timeout.value);
     });
@@ -82,7 +73,7 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          tiggerToast(
+          triggerToast(
             "일시적으로 오류가 발생하였습니다 잠시후 다시 이용해주세요",
             "danger"
           );
@@ -90,17 +81,6 @@ export default {
     };
 
     getTodo();
-    const tiggerToast = (message, type = "info") => {
-      toastMessage.value = message;
-      toastAlertType.value = type;
-      showToast.value = true;
-      timeout.value = setTimeout(() => {
-        console.log("야호");
-        toastMessage.value = "";
-        toastAlertType.value = "";
-        showToast.value = false;
-      }, 3000);
-    };
 
     const onSave = () => {
       axios
@@ -110,7 +90,7 @@ export default {
         })
         .then((res) => {
           originalTodo.value = { ...res.data };
-          tiggerToast("등록이 완료 되었습니다", "info");
+          triggerToast("등록이 완료 되었습니다", "info");
         })
         .catch((err) => {
           console.log(err);
@@ -133,7 +113,7 @@ export default {
     return {
       timeout,
       toastAlertType,
-      tiggerToast,
+      triggerToast,
       todoUpdated,
       todo,
       loading,

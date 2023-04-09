@@ -37,6 +37,7 @@
       </ul>
     </nav>
   </div>
+  <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
 </template>
 
 <script>
@@ -44,10 +45,13 @@ import { ref, computed, watch } from "vue";
 import axios from "axios";
 import TodoBasicForm from "@/components/TodoBasicForm.vue";
 import TodoList from "@/components/TodoList.vue";
+import Toast from "@/components/Toast.vue";
+import { useToast } from "@/composables/toast";
 export default {
   components: {
     TodoBasicForm,
     TodoList,
+    Toast,
   },
   setup() {
     const error = ref("");
@@ -57,8 +61,8 @@ export default {
     const totalTodos = ref(0);
     let limit = 5;
     const currentPage = ref(1);
+    const { toastMessage, toastAlertType, showToast, triggerToast } =useToast();
 
-    let timeout = null;
     const searchTodo = () => {
       clearTimeout(timeout);
       getTodos(1);
@@ -86,6 +90,10 @@ export default {
         .catch((err) => {
           err.value =
             "일시적으로 오류가 발생했습니다. 잠시후 다시 이용해주세요";
+          triggerToast(
+            "일시적으로 오류가 발생하였습니다 잠시후 다시 이용해주세요",
+            "danger"
+          );
         });
     };
     getTodos();
@@ -103,6 +111,10 @@ export default {
         .catch((err) => {
           err.value =
             "일시적으로 오류가 발생했습니다. 잠시후 다시 이용해주세요";
+          triggerToast(
+            "일시적으로 오류가 발생하였습니다 잠시후 다시 이용해주세요",
+            "danger"
+          );
         });
     };
 
@@ -123,11 +135,14 @@ export default {
         .catch(() => {
           error.value =
             "일시적으로 오류가 발생했습니다. 잠시후 다시 이용해주세요";
+          triggerToast(
+            "일시적으로 오류가 발생하였습니다 잠시후 다시 이용해주세요",
+            "danger"
+          );
         });
     };
 
-    const toggleTodo = (index,checked) => {
-      console.log(checked);
+    const toggleTodo = (index, checked) => {
       error.value = "";
       const id = todos.value[index].id;
       axios
@@ -140,6 +155,10 @@ export default {
         .catch(() => {
           error.value =
             "일시적으로 오류가 발생했습니다. 잠시후 다시 이용해주세요";
+          triggerToast(
+            "일시적으로 오류가 발생하였습니다 잠시후 다시 이용해주세요",
+            "danger"
+          );
         });
     };
 
@@ -156,6 +175,9 @@ export default {
       numberOfPages,
       currentPage,
       getTodos,
+      toastMessage,
+      toastAlertType,
+      showToast,
     };
   },
 };
