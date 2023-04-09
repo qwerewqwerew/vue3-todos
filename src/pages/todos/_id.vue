@@ -25,7 +25,9 @@
         </div>
       </div>
     </div>
-    <button class="btn btn-primary">저장</button>
+    <button type="submit" class="btn btn-primary" :disabled="!todoUpdated">
+      저장
+    </button>
     <button class="btn btn-outline-dark ml-2" @click="moveToTodoListPage">
       취소
     </button>
@@ -36,21 +38,25 @@
 <script>
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
+import { computed } from "vue";
 import { ref } from "@vue/reactivity";
+import _ from "lodash";
 export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const originalTodo = ref(null);
     const todo = ref(null);
     const loading = ref(true);
-    const todoId = route.params.id
-    const url="http://localhost:3000/todos/";
+    const todoId = route.params.id;
+    const url = "http://localhost:3000/todos/";
 
     const getTodo = () => {
       axios
         .get(`${url}${todoId}`)
         .then((res) => {
-          todo.value = res.data;
+          todo.value = { ...res.data };
+          originalTodo.value = { ...res.data };
           loading.value = false;
         })
         .catch((error) => {
@@ -67,7 +73,7 @@ export default {
           completed: todo.value.completed,
         })
         .then((res) => {
-          console.log(res);
+           originalTodo.value = {...res.data};
         })
         .catch((err) => {
           console.log(err);
@@ -83,7 +89,11 @@ export default {
     const toggleTodoStatus = () => {
       todo.value.completed = !todo.value.completed;
     };
+    const todoUpdated = computed(() => {
+      return !_.isEqual(todo.value, originalTodo.value);
+    });
     return {
+      todoUpdated,
       todo,
       loading,
       toggleTodoStatus,
