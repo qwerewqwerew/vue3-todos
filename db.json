@@ -42,28 +42,13 @@
     },
     {
       "subject": "자바스크립트 복습하기",
-      "completed": false,
+      "completed": true,
       "id": 9
     },
     {
       "subject": "리덕스 공부하기",
       "completed": false,
       "id": 10
-    },
-    {
-      "subject": "리덕스 공부하기",
-      "completed": false,
-      "id": 11
-    },
-    {
-      "subject": "리덕스적용",
-      "completed": false,
-      "id": 12
-    },
-    {
-      "subject": "타입스크립트 공부",
-      "completed": false,
-      "id": 13
     }
   ]
 }

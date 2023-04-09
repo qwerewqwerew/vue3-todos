@@ -127,16 +127,16 @@ export default {
         });
     };
 
-    const toggleTodo = (index) => {
+    const toggleTodo = (index,checked) => {
+      console.log(checked);
       error.value = "";
       const id = todos.value[index].id;
-      console.log(todos.value[index].completed);
       axios
         .patch("http://localhost:3000/todos/" + id, {
-          completed: !todos.value[index].completed,
+          completed: checked,
         })
         .then(() => {
-          todos.value[index].completed = !todos.value[index].completed;
+          todos.value[index].completed = checked;
         })
         .catch(() => {
           error.value =
