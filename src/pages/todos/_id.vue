@@ -32,6 +32,7 @@
       취소
     </button>
   </form>
+  <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
 </template>
 
 
@@ -40,8 +41,13 @@ import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import { computed } from "vue";
 import { ref } from "@vue/reactivity";
+import Toast from "@/components/Toast.vue";
+
 import _ from "lodash";
 export default {
+  components: {
+    Toast,
+  },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -50,6 +56,9 @@ export default {
     const loading = ref(true);
     const todoId = route.params.id;
     const url = "http://localhost:3000/todos/";
+    const showToast = ref(false);
+    const toastMessage = ref("");
+    const toastAlertType = ref("");
 
     const getTodo = () => {
       axios
@@ -60,11 +69,23 @@ export default {
           loading.value = false;
         })
         .catch((error) => {
-          console.error(error);
+          console.log(error);
+          tiggerToast(
+            "일시적으로 오류가 발생하였습니다 잠시후 다시 이용해주세요","danger");
         });
     };
 
     getTodo();
+    const tiggerToast = (message, type = "info") => {
+      toastMessage.value = message;
+      toastAlertType.value = type;
+      showToast.value = true;
+      setTimeout(() => {
+        toastMessage.value = "";
+        toastAlertType.value = "";
+        showToast.value = false;
+      }, 3000);
+    };
 
     const onSave = () => {
       axios
@@ -73,7 +94,8 @@ export default {
           completed: todo.value.completed,
         })
         .then((res) => {
-           originalTodo.value = {...res.data};
+          originalTodo.value = { ...res.data };
+          tiggerToast("등록이 완료 되었습니다", "info");
         })
         .catch((err) => {
           console.log(err);
@@ -92,13 +114,18 @@ export default {
     const todoUpdated = computed(() => {
       return !_.isEqual(todo.value, originalTodo.value);
     });
+
     return {
+      toastAlertType,
+      tiggerToast,
       todoUpdated,
       todo,
       loading,
       toggleTodoStatus,
       moveToTodoListPage,
       onSave,
+      showToast,
+      toastMessage,
     };
   },
 };
