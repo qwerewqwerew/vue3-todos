@@ -1,6 +1,5 @@
 <template>
-  <router-view />
-  <div class="container">
+  <div>
     <h1>오늘의 할일</h1>
     <input
       class="form-control"

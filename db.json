@@ -42,12 +42,12 @@
     },
     {
       "subject": "자바스크립트 복습하기",
-      "completed": true,
+      "completed": false,
       "id": 9
     },
     {
       "subject": "리덕스 공부하기",
-      "completed": false,
+      "completed": true,
       "id": 10
     }
   ]
