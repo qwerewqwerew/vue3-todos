@@ -33,13 +33,22 @@
     </button>
   </form>
   <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
+  <div id="mango">doggy</div>
 </template>
 
 
 <script>
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
-import { computed } from "vue";
+import {
+  computed,
+  onBeforeMount,
+  onMounted,
+  onBeforeUpdate,
+  onUpdated,
+  onBeforeUnmount,
+  onUnmounted,
+} from "vue";
 import { ref } from "@vue/reactivity";
 import Toast from "@/components/Toast.vue";
 
@@ -49,6 +58,25 @@ export default {
     Toast,
   },
   setup() {
+    onBeforeMount(() => {
+      console.log(document.querySelector("#mango"));
+    });
+    onMounted(() => {
+      console.log("onMounted:", document.querySelector("#mango"));
+    });
+    console.log("연결");
+    onUpdated(() => {
+      console.log("업데이트됨");
+    });
+    onBeforeUpdate(() => {
+      console.log("업데이트 되기 직전");
+    });
+    onBeforeUnmount(() => {
+      console.log("소멸직적");
+    });
+    onUnmounted(() => {
+      console.log("소멸");
+    });
     const route = useRoute();
     const router = useRouter();
     const originalTodo = ref(null);
@@ -71,7 +99,9 @@ export default {
         .catch((error) => {
           console.log(error);
           tiggerToast(
-            "일시적으로 오류가 발생하였습니다 잠시후 다시 이용해주세요","danger");
+            "일시적으로 오류가 발생하였습니다 잠시후 다시 이용해주세요",
+            "danger"
+          );
         });
     };
 
