@@ -58,25 +58,6 @@ export default {
     Toast,
   },
   setup() {
-    onBeforeMount(() => {
-      console.log(document.querySelector("#mango"));
-    });
-    onMounted(() => {
-      console.log("onMounted:", document.querySelector("#mango"));
-    });
-    console.log("연결");
-    onUpdated(() => {
-      console.log("업데이트됨");
-    });
-    onBeforeUpdate(() => {
-      console.log("업데이트 되기 직전");
-    });
-    onBeforeUnmount(() => {
-      console.log("소멸직적");
-    });
-    onUnmounted(() => {
-      console.log("소멸");
-    });
     const route = useRoute();
     const router = useRouter();
     const originalTodo = ref(null);
@@ -87,7 +68,10 @@ export default {
     const showToast = ref(false);
     const toastMessage = ref("");
     const toastAlertType = ref("");
-
+    const timeout = ref(null);
+    onUnmounted(() => {
+      clearTimeout(timeout.value);
+    });
     const getTodo = () => {
       axios
         .get(`${url}${todoId}`)
@@ -110,7 +94,8 @@ export default {
       toastMessage.value = message;
       toastAlertType.value = type;
       showToast.value = true;
-      setTimeout(() => {
+      timeout.value = setTimeout(() => {
+        console.log("야호");
         toastMessage.value = "";
         toastAlertType.value = "";
         showToast.value = false;
@@ -146,6 +131,7 @@ export default {
     });
 
     return {
+      timeout,
       toastAlertType,
       tiggerToast,
       todoUpdated,
