@@ -1,6 +1,11 @@
 <template>
   <div>
-    <h1>오늘의 할일</h1>
+    <div class="d-flex justify-content-between mb-3">
+      <h1>오늘의 할일</h1>
+      <button class="btn btn-primary" @click="moveToCreatePage">
+        일정추가
+      </button>
+    </div>
     <input
       class="form-control"
       type="text"
@@ -47,6 +52,7 @@ import TodoBasicForm from "@/components/TodoBasicForm.vue";
 import TodoList from "@/components/TodoList.vue";
 import Toast from "@/components/Toast.vue";
 import { useToast } from "@/composables/toast";
+import { useRouter } from "vue-router";
 export default {
   components: {
     TodoBasicForm,
@@ -54,6 +60,7 @@ export default {
     Toast,
   },
   setup() {
+    const router = useRouter();
     const error = ref("");
     const toggle = ref(false);
     const todos = ref([]);
@@ -61,7 +68,8 @@ export default {
     const totalTodos = ref(0);
     let limit = 5;
     const currentPage = ref(1);
-    const { toastMessage, toastAlertType, showToast, triggerToast } =useToast();
+    const { toastMessage, toastAlertType, showToast, triggerToast } =
+      useToast();
 
     const searchTodo = () => {
       clearTimeout(timeout);
@@ -161,8 +169,13 @@ export default {
           );
         });
     };
-
+    const moveToCreatePage = () => {
+      router.push({
+        name: "TodoCreate",
+      });
+    };
     return {
+      moveToCreatePage,
       onSubmit,
       todos,
       toggle,
