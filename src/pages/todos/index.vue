@@ -14,7 +14,6 @@
       @keyup.enter="searchTodo"
     />
     <hr />
-    <TodoBasicForm @add-todo="onSubmit" />
     <div style="color: red">{{ error }}</div>
     <div v-if="!todos.length">등록된 일정이 없습니다</div>
     <div v-if="!todos.length">검색결과가 없습니다</div>
@@ -48,14 +47,12 @@
 <script>
 import { ref, computed, watch } from "vue";
 import axios from "axios";
-import TodoBasicForm from "@/components/TodoBasicForm.vue";
 import TodoList from "@/components/TodoList.vue";
 import Toast from "@/components/Toast.vue";
 import { useToast } from "@/composables/toast";
 import { useRouter } from "vue-router";
 export default {
   components: {
-    TodoBasicForm,
     TodoList,
     Toast,
   },

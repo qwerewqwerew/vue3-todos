@@ -51,9 +51,15 @@
       "id": 10
     },
     {
-      "subject": "등록된 -",
+      "subject": "등록된 일정",
       "completed": false,
       "id": 11
+    },
+    {
+      "subject": "nextjs 공부",
+      "completed": false,
+      "body": "1강 듣기",
+      "id": 12
     }
   ]
 }

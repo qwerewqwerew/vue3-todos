@@ -1,13 +1,16 @@
 <template>
-  <h2>일정등록</h2>
+	<h2 class="red">일정등록</h2>
+	<TodoForm />
 </template>
 
 <script>
-export default {
+	import TodoForm from "@/components/TodoForm.vue";
 
-}
+	export default {
+		components: {
+			TodoForm,
+		},
+	};
 </script>
 
-<style>
-
-</style>
+<style></style>
