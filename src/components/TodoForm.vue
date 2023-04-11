@@ -29,7 +29,7 @@
 		<button type="submit" class="btn btn-primary m-2" :disabled="!todoUpdated">{{ editing ? "수정" : "등록" }}</button>
 		<button class="btn btn-outline-dark ml-2" @click="moveToTodoListPage">취소</button>
 	</form>
-	<Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
+<Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
 </template>
 <script>
 	import { useRoute, useRouter } from "vue-router";
@@ -160,4 +160,5 @@
 	.red {
 		color: red;
 	}
+
 </style>

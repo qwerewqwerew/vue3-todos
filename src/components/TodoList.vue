@@ -1,69 +1,55 @@
 <template>
-  <div class="card mb-2">
-    <div
-      @click="moveToPage(todo.id)"
-      v-for="(todo, index) in todos"
-      :key="todo.id"
-      class="card-body p-2 d-flex align-items-center"
-      style="cursor: pointer"
-    >
-      <div class="form-check flex-grow-1">
-        <label class="form-check-label" :class="{ todo: todo.completed }">
-          {{ todo.subject }}
-          <input
-            class="form-check-input"
-            type="checkbox"
-            :checked="todo.completed"
-            @change="toggleTodo(index, $event)"
-            @click.stop
-          />
-        </label>
-      </div>
-      <div>
-        <button class="btn btn-danger btn-sm" @click.stop="deleteTodo(index)">
-          삭제
-        </button>
-      </div>
-    </div>
-  </div>
+	<div class="card mb-2">
+		<div @click="moveToPage(todo.id)" v-for="(todo, index) in todos" :key="todo.id" class="card-body p-2 d-flex align-items-center" style="cursor: pointer">
+
+			<div class="flex-grow-1">
+				<input class="ms-2 me-2" type="checkbox" :checked="todo.completed" @change="toggleTodo(index, $event)" @click.stop />
+				<span :class="{ todo: todo.completed }">
+					{{ todo.subject }}
+				</span>
+			</div>
+			<div>
+				<button class="btn btn-danger btn-sm" @click.stop="deleteTodo(index)">삭제</button>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
-import { useRouter } from "vue-router";
+	import { useRouter } from "vue-router";
 
-export default {
-  props: {
-    todos: {
-      type: Array,
-      required: true,
-    },
-  },
-  emits: ["toggle-todo", "delete-todo"],
-  setup(props, { emit }) {
-    const router = useRouter();
-    const toggleTodo = (index, event) => {
-      emit("toggle-todo", index, event.target.checked);
-    };
-    const deleteTodo = (index) => {
-      emit("delete-todo", index);
-    };
-    const moveToPage = (todoId) => {
-      router.push("/todos/" + todoId);
-      router.push({
-        name: "Todo",
-        params: {
-          id: todoId,
-        },
-      });
-    };
-    return {
-      toggleTodo,
-      deleteTodo,
-      moveToPage,
-    };
-  },
-};
+	export default {
+		props: {
+			todos: {
+				type: Array,
+				required: true,
+			},
+		},
+		emits: ["toggle-todo", "delete-todo"],
+		setup(props, { emit }) {
+			const router = useRouter();
+			const toggleTodo = (index, event) => {
+				emit("toggle-todo", index, event.target.checked);
+			};
+			const deleteTodo = (index) => {
+				emit("delete-todo", index);
+			};
+			const moveToPage = (todoId) => {
+				router.push("/todos/" + todoId);
+				router.push({
+					name: "Todo",
+					params: {
+						id: todoId,
+					},
+				});
+			};
+			return {
+				toggleTodo,
+				deleteTodo,
+				moveToPage,
+			};
+		},
+	};
 </script>
 
-<style>
-</style>
+<style></style>
