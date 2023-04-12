@@ -1,7 +1,6 @@
 <template>
 	<div class="card mb-2">
 		<div @click="moveToPage(todo.id)" v-for="(todo, index) in todos" :key="todo.id" class="card-body p-2 d-flex align-items-center" style="cursor: pointer">
-
 			<div class="flex-grow-1">
 				<input class="ms-2 me-2" type="checkbox" :checked="todo.completed" @change="toggleTodo(index, $event)" @click.stop />
 				<span :class="{ todo: todo.completed }">
@@ -9,16 +8,21 @@
 				</span>
 			</div>
 			<div>
-				<button class="btn btn-danger btn-sm" @click.stop="deleteTodo(index)">삭제</button>
+				<button class="btn btn-danger btn-sm" @click.stop="deleteTodo(todo.id)">삭제</button>
 			</div>
 		</div>
 	</div>
+	<Modal v-if="showModal" @close="closeModal" />
 </template>
 
 <script>
+	import Modal from "@/components/Modal.vue";
 	import { useRouter } from "vue-router";
-
+	import { ref } from "vue";
 	export default {
+		components: {
+			Modal,
+		},
 		props: {
 			todos: {
 				type: Array,
@@ -28,11 +32,20 @@
 		emits: ["toggle-todo", "delete-todo"],
 		setup(props, { emit }) {
 			const router = useRouter();
+			const showModal = ref(false);
+			const todoDeleteId = ref(null);
+
+			const closeModal = () => {
+				todoDeleteId.value = null;
+				showModal.value = false;
+			};
 			const toggleTodo = (index, event) => {
 				emit("toggle-todo", index, event.target.checked);
 			};
-			const deleteTodo = (index) => {
-				emit("delete-todo", index);
+			const deleteTodo = (id) => {
+				emit("delete-todo", id);
+				showModal.value = true;
+				todoDeleteId = id;
 			};
 			const moveToPage = (todoId) => {
 				router.push("/todos/" + todoId);
@@ -47,6 +60,8 @@
 				toggleTodo,
 				deleteTodo,
 				moveToPage,
+				showModal,
+				closeModal,
 			};
 		},
 	};

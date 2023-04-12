@@ -47,7 +47,7 @@
     },
     {
       "subject": "리덕스 공부하기 와 useReduce",
-      "completed": true,
+      "completed": false,
       "id": 10
     },
     {
@@ -56,16 +56,10 @@
       "id": 11
     },
     {
-      "subject": "nextjs 공부",
+      "subject": "모달창구현",
       "completed": false,
-      "body": "1강 듣기",
+      "body": "뷰 모달창구현",
       "id": 12
-    },
-    {
-      "subject": "aa",
-      "completed": false,
-      "body": "ee",
-      "id": 13
     }
   ]
 }
