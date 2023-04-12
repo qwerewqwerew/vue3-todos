@@ -8,11 +8,11 @@
 				</span>
 			</div>
 			<div>
-				<button class="btn btn-danger btn-sm" @click.stop="deleteTodo(todo.id)">삭제</button>
+				<button class="btn btn-danger btn-sm" @click.stop="openModal(todo.id)">삭제</button>
 			</div>
 		</div>
 	</div>
-	<Modal v-if="showModal" @close="closeModal" />
+	<Modal v-if="showModal" @close="closeModal" @delete="deleteTodo"/>
 </template>
 
 <script>
@@ -42,11 +42,14 @@
 			const toggleTodo = (index, event) => {
 				emit("toggle-todo", index, event.target.checked);
 			};
-			const deleteTodo = (id) => {
-				emit("delete-todo", id);
+			const openModal = (id) => {
+				todoDeleteId.value = id;
 				showModal.value = true;
-				todoDeleteId = id;
 			};
+			const deleteTodo = () => {
+				emit("delete-todo", todoDeleteId.value);
+			};
+
 			const moveToPage = (todoId) => {
 				router.push("/todos/" + todoId);
 				router.push({
@@ -57,6 +60,7 @@
 				});
 			};
 			return {
+				openModal,
 				toggleTodo,
 				deleteTodo,
 				moveToPage,

@@ -49,17 +49,6 @@
       "subject": "리덕스 공부하기 와 useReduce",
       "completed": false,
       "id": 10
-    },
-    {
-      "subject": "등록된 일정",
-      "completed": false,
-      "id": 11
-    },
-    {
-      "subject": "모달창구현",
-      "completed": false,
-      "body": "뷰 모달창구현",
-      "id": 12
     }
   ]
 }

@@ -7,10 +7,11 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="onClose"></button>
 				</div>
 				<div class="modal-body">
-					<p>Modal body text goes here.</p>
+					<p>일정을 삭제합니다</p>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="onClose">Close</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="onClose">취소</button>
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="onDelete">확인</button>
 				</div>
 			</div>
 		</div>
@@ -23,7 +24,11 @@
 			const onClose = () => {
 				emit("close");
 			};
+			const onDelete = () => {
+				emit("delete");
+			};
 			return {
+				onDelete,
 				onClose,
 			};
 		},
