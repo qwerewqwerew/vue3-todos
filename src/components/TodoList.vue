@@ -18,7 +18,7 @@
 </template>
 
 <script>
-	import Modal from "@/components/Modal.vue";
+	import Modal from "@/components/DeleteModal.vue";
 	import { useRouter } from "vue-router";
 	import { ref } from "vue";
 	export default {
@@ -41,15 +41,13 @@
 				todoDeleteId.value = null;
 				showModal.value = false;
 			};
+
 			const toggleTodo = (index, event) => {
 				emit("toggle-todo", index, event.target.checked);
 			};
 			const openModal = (id) => {
 				todoDeleteId.value = id;
 				showModal.value = true;
-			};
-			const deleteTodo = () => {
-				emit("delete-todo", todoDeleteId.value);
 			};
 
 			const moveToPage = (todoId) => {
@@ -64,7 +62,6 @@
 			return {
 				openModal,
 				toggleTodo,
-				deleteTodo,
 				moveToPage,
 				showModal,
 				closeModal,

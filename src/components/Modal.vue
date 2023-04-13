@@ -3,15 +3,16 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Modal title</h5>
+					<h5 class="modal-title">
+						<slot name="title"></slot>
+					</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="onClose"></button>
 				</div>
 				<div class="modal-body">
-					<p>일정을 삭제합니다</p>
+					<slot name="body"></slot>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="onClose">취소</button>
-					<button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="onDelete">확인</button>
+					<slot name="footer"></slot>
 				</div>
 			</div>
 		</div>

@@ -1,5 +1,5 @@
 <template>
-  <div style="opacity: 0.5">
+  <div>
 		<div class="d-flex justify-content-between mb-3">
 			<h1>오늘의 할일</h1>
 			<button class="btn btn-primary" @click="moveToCreatePage">일정추가</button>
