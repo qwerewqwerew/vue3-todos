@@ -12,7 +12,9 @@
 			</div>
 		</div>
 	</div>
-	<Modal v-if="showModal" @close="closeModal" @delete="deleteTodo"/>
+	<teleport to="#new">
+		<Modal v-if="showModal" @close="closeModal" @delete="deleteTodo" />
+	</teleport>
 </template>
 
 <script>
