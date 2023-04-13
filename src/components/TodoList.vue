@@ -41,6 +41,12 @@
 				todoDeleteId.value = null;
 				showModal.value = false;
 			};
+			const deleteTodo = () => {
+				emit("delete-todo", todoDeleteId.value);
+
+				showModal.value = false;
+				todoDeleteId.value = null;
+			};
 
 			const toggleTodo = (index, event) => {
 				emit("toggle-todo", index, event.target.checked);
@@ -65,6 +71,7 @@
 				moveToPage,
 				showModal,
 				closeModal,
+				deleteTodo,
 			};
 		},
 	};
