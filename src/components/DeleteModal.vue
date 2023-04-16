@@ -1,8 +1,8 @@
 <template>
 	<Modal>
-		<template v-slot:title>일정삭제👺</template>
-		<template v-slot:body>일정이 삭제됩니다💀</template>
-		<template v-slot:footer>
+		<template #title>일정삭제👺</template>
+		<template #body>일정이 삭제됩니다💀</template>
+		<template #footer>
 			<button type="button" class="btn btn-secondary" @click="onClose">취소</button>
 			<button type="button" class="btn btn-danger" @click="onDelete">확인</button>
 		</template>
