@@ -3,15 +3,7 @@
 	<div v-if="loading">Loading..</div>
 	<form v-else @submit.prevent="onSave">
 		<div class="row">
-			<div class="col-6">
-				<div class="form-group">
-					<label>일정명: </label>
-					<input type="text" class="form-control" v-model="todo.subject" />
-				</div>
-				<div v-if="subjectError" style="color: red">
-					{{ subjectError }}
-				</div>
-			</div>
+			<div class="col-6"><Input label="일정명😀" v-model:subject="todo.subject" :error="subjectError" /></div>
 			<div v-if="editing" class="col-6">
 				<div class="form-group">
 					<label>완료상태: </label>
@@ -40,10 +32,12 @@
 	import { ref } from "@vue/reactivity";
 	import Toast from "@/components/Toast.vue";
 	import { useToast } from "@/composables/toast";
+	import Input from "@/components/Input.vue";
 	import _ from "lodash";
 	export default {
 		components: {
 			Toast,
+			Input,
 		},
 		props: {
 			editing: {
@@ -159,9 +153,6 @@
 </script>
 
 <style scoped>
-	.red {
-		color: red;
-	}
 	.fade-enter-active,
 	.fade-leave-active {
 		transition: all 0.5s ease;
