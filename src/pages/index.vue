@@ -1,10 +1,21 @@
 <template>
-  <h1>메인화면</h1>
+	<h1>메인화면</h1>
+	<div>{{ count }}</div>
+	<button @click="count++">Add</button>
 </template>
 
 <script>
-export default {};
+	import { useCount } from "@/composables/count";
+
+	export default {
+		setup() {
+			const { count } = useCount();
+
+			return {
+				count,
+			};
+		},
+	};
 </script>
 
-<style>
-</style>
+<style></style>

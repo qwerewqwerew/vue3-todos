@@ -1,5 +1,5 @@
 <template>
-  <div>
+	<div>
 		<div class="d-flex justify-content-between mb-3">
 			<h1>오늘의 할일</h1>
 			<button class="btn btn-primary" @click="moveToCreatePage">일정추가</button>
@@ -29,11 +29,12 @@
 
 <script>
 	import { ref, computed, watch } from "vue";
-	import axios from "axios";
 	import TodoList from "@/components/TodoList.vue";
 	import Toast from "@/components/Toast.vue";
 	import { useToast } from "@/composables/toast";
 	import { useRouter } from "vue-router";
+	import axios from "@/axios";
+
 	export default {
 		components: {
 			TodoList,
@@ -67,7 +68,7 @@
 			const getTodos = (page = currentPage.value) => {
 				currentPage.value = page;
 				axios
-					.get(`http://localhost:3000/todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`)
+					.get(`todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`)
 					.then((res) => {
 						totalTodos.value = res.headers["x-total-count"];
 						todos.value = res.data;
@@ -81,7 +82,7 @@
 			const onSubmit = (todo) => {
 				error.value = "";
 				axios
-					.post("http://localhost:3000/todos", {
+					.post("todos", {
 						subject: todo.subject,
 						completed: todo.complated,
 					})
@@ -104,7 +105,7 @@
 				console.log(id);
 				error.value = "";
 				axios
-					.delete("http://localhost:3000/todos/" + id)
+					.delete("todos/" + id)
 					.then(() => {
 						alert("삭제 되었습니다");
 						getTodos(1);
@@ -119,7 +120,7 @@
 				error.value = "";
 				const id = todos.value[index].id;
 				axios
-					.patch("http://localhost:3000/todos/" + id, {
+					.patch("todos/" + id, {
 						completed: checked,
 					})
 					.then(() => {

@@ -27,7 +27,6 @@
 				console.log(e.target.value);
 				emit("update:subject", e.target.value);
 			};
-
 			return {
 				onInput,
 			};

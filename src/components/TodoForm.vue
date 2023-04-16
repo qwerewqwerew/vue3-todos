@@ -27,7 +27,7 @@
 </template>
 <script>
 	import { useRoute, useRouter } from "vue-router";
-	import axios from "axios";
+	import axios from "@/axios";
 	import { computed } from "vue";
 	import { ref } from "@vue/reactivity";
 	import Toast from "@/components/Toast.vue";
@@ -57,7 +57,7 @@
 			});
 			const loading = ref(false);
 			const todoId = route.params.id;
-			const url = "http://localhost:3000/todos/";
+			const url = `todos/`;
 			const { toastMessage, toastAlertType, showToast, triggerToast } = useToast();
 
 			const getTodo = () => {
@@ -94,7 +94,7 @@
 				};
 				if (props.editing) {
 					axios
-						.put(`http://localhost:3000/todos/${todoId}`, data)
+						.put(`todos/${todoId}`, data)
 						.then((response) => {
 							res = response;
 							originalTodo.value = { ...res.data };
@@ -107,7 +107,7 @@
 						});
 				} else {
 					axios
-						.post(`http://localhost:3000/todos`, data)
+						.post(`todos`, data)
 						.then((response) => {
 							res = response;
 							todo.value.subject = "";
