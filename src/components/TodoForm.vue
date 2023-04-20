@@ -86,40 +86,30 @@
 					subjectError.value = "일정명은 필수입력사항 입니다";
 					return;
 				}
-				let res;
-				const data = {
-					subject: todo.value.subject,
-					completed: todo.value.completed,
-					body: todo.value.body,
-				};
-				if (props.editing) {
-					axios
-						.put(`todos/${todoId}`, data)
-						.then((response) => {
-							res = response;
+				axios({
+					method: props.editing ? "put" : "post",
+					url: props.editing ? `todos/${todoId}` : "todos",
+					data: {
+						subject: todo.value.subject,
+						completed: todo.value.completed,
+						body: todo.value.body,
+					},
+				})
+					.then((res) => {
+						const message = ` ${props.editing ? "등록에" : "수정에"} 성공 하였습니다`;
+						triggerToast(message);
+						if (!props.editing) {
+							router.push({
+								name: "Todos",
+							});
+						} else {
 							originalTodo.value = { ...res.data };
-							const message = "수정에 성공 하였습니다!";
-							triggerToast(message);
-						})
-						.catch((error) => {
-							console.log(error);
-							triggerToast("일시적으로 오류가 발생하였습니다 잠시후 다시 이용해주세요", "danger");
-						});
-				} else {
-					axios
-						.post(`todos`, data)
-						.then((response) => {
-							res = response;
-							todo.value.subject = "";
-							todo.value.body = "";
-							const message = "등록에 성공 하였습니다!";
-							triggerToast(message);
-						})
-						.catch((error) => {
-							console.log(error);
-							triggerToast("일시적으로 오류가 발생하였습니다 잠시후 다시 이용해주세요", "danger");
-						});
-				}
+						}
+					})
+					.catch((error) => {
+						console.log(error);
+						triggerToast("일시적으로 오류가 발생하였습니다 잠시후 다시 이용해주세요", "danger");
+					});
 			};
 
 			const moveToTodoListPage = () => {
