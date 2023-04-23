@@ -7,7 +7,7 @@ export const useToast = () => {
   const toastAlertType = computed(() => store.state.toastAlertType);
   const showToast = computed(() => store.state.showToast);
   const triggerToast = (message, type = "info") => {
-    store.dispatch('triggerToast', message, type);
+    store.dispatch('triggerToast', {message, type});
   };
 
 

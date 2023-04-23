@@ -16,14 +16,12 @@ export default createStore({
         UPDATE_TOAST_STATUS(state, payload) {
             state.showToast = payload;
         },
-        UPDATE_TOAST_TIMEOUT(state, payload) {
-            state.timeout = payload;
-        }
     },
     actions: {
-        triggerToast({ commit }, message, type = 'success') {
-            commit('UPDATE_TOAST_MESSAGE', message)
-            commit('UPDATE_TOAST_ALERT_TYPE', type)
+        triggerToast({ commit }, payload) {
+            console.log("여기payload",payload);
+            commit('UPDATE_TOAST_MESSAGE', payload.message)
+            commit('UPDATE_TOAST_ALERT_TYPE', payload.type)
             commit('UPDATE_TOAST_STATUS', true)
            setTimeout(() => {
                 commit('UPDATE_TOAST_MESSAGE', '')
