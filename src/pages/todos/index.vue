@@ -2,35 +2,65 @@
 	<div>
 		<div class="d-flex justify-content-between mb-3">
 			<h1>오늘의 할일</h1>
-			<button class="btn btn-primary" @click="moveToCreatePage">일정추가</button>
+			<button
+				class="btn btn-primary"
+				@click="moveToCreatePage">
+				일정추가
+			</button>
 		</div>
-		<input class="form-control" type="text" v-model="searchText" placeholder="Search" @keyup.enter="searchTodo" />
+		<input
+			class="form-control"
+			type="text"
+			v-model="searchText"
+			placeholder="Search"
+			@keyup.enter="searchTodo" />
 		<hr />
 		<div style="color: red">{{ error }}</div>
 		<div v-if="!todos.length">등록된 일정이 없습니다</div>
 		<div v-if="!todos.length">검색결과가 없습니다</div>
-		<TodoList :todos="todos" @toggle-todo="toggleTodo" @delete-todo="deleteTodo" />
+		<TodoList
+			:todos="todos"
+			@toggle-todo="toggleTodo"
+			@delete-todo="deleteTodo" />
 		<nav aria-label="Page navigation example">
 			<ul class="pagination justify-content-center">
-				<li v-if="currentPage !== 1" class="page-item">
-					<a class="page-link" @click="getTodos(currentPage - 1)"> 이전 </a>
+				<li
+					v-if="currentPage !== 1"
+					class="page-item">
+					<a
+						class="page-link"
+						@click="getTodos(currentPage - 1)">
+						이전
+					</a>
 				</li>
-				<li v-for="page in numberOfPages" :key="page" class="page-item" :class="currentPage === page ? 'active' : ''">
-					<a class="page-link" @click="getTodos(page)">{{ page }}</a>
+				<li
+					v-for="page in numberOfPages"
+					:key="page"
+					class="page-item"
+					:class="currentPage === page ? 'active' : ''">
+					<a
+						class="page-link"
+						@click="getTodos(page)"
+						>{{ page }}</a
+					>
 				</li>
-				<li v-if="numberOfPages !== currentPage" class="page-item">
-					<a class="page-link" @click="getTodos(currentPage + 1)">다음</a>
+				<li
+					v-if="numberOfPages !== currentPage"
+					class="page-item">
+					<a
+						class="page-link"
+						@click="getTodos(currentPage + 1)"
+						>다음</a
+					>
 				</li>
 			</ul>
 		</nav>
 	</div>
-	<Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
 </template>
 
 <script>
 	import { ref, computed, watch } from "vue";
 	import TodoList from "@/components/TodoList.vue";
-	import Toast from "@/components/Toast.vue";
 	import { useToast } from "@/composables/toast";
 	import { useRouter } from "vue-router";
 	import axios from "@/axios";
@@ -38,7 +68,6 @@
 	export default {
 		components: {
 			TodoList,
-			Toast,
 		},
 		setup() {
 			const router = useRouter();

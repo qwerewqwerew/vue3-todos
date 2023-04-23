@@ -1,42 +1,65 @@
 <template>
 	<h1 v-if="editing">일정상세페이지</h1>
 	<div v-if="loading">Loading..</div>
-	<form v-else @submit.prevent="onSave">
+	<form
+		v-else
+		@submit.prevent="onSave">
 		<div class="row">
-			<div class="col-6"><Input label="일정명😀" v-model:subject="todo.subject" :error="subjectError" /></div>
-			<div v-if="editing" class="col-6">
+			<div class="col-6">
+				<Input
+					label="일정명😀"
+					v-model:subject="todo.subject"
+					:error="subjectError" />
+			</div>
+			<div
+				v-if="editing"
+				class="col-6">
 				<div class="form-group">
 					<label>완료상태: </label>
 					<div>
-						<button class="btn" type="button" :class="todo.completed ? ' btn-success ' : 'btn-danger'" @click="toggleTodoStatus">
+						<button
+							class="btn"
+							type="button"
+							:class="todo.completed ? ' btn-success ' : 'btn-danger'"
+							@click="toggleTodoStatus">
 							{{ todo.completed ? "완료" : "미완료" }}
 						</button>
 					</div>
 				</div>
 			</div>
 			<div class="col-12">
-				<div class="form-group"><label>일정내용:</label><textarea class="form-control" v-model="todo.body" cols="30" rows="10"></textarea></div>
+				<div class="form-group">
+					<label>일정내용:</label
+					><textarea
+						class="form-control"
+						v-model="todo.body"
+						cols="30"
+						rows="10"></textarea>
+				</div>
 			</div>
 		</div>
-		<button type="submit" class="btn btn-primary m-2" :disabled="!todoUpdated">{{ editing ? "수정" : "등록" }}</button>
-		<button class="btn btn-outline-dark ml-2" @click="moveToTodoListPage">취소</button>
+		<button
+			type="submit"
+			class="btn btn-primary m-2"
+			:disabled="!todoUpdated">
+			{{ editing ? "수정" : "등록" }}
+		</button>
+		<button
+			class="btn btn-outline-dark ml-2"
+			@click="moveToTodoListPage">
+			취소
+		</button>
 	</form>
-	<transition name="fade">
-		<Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
-	</transition>
 </template>
 <script>
 	import { useRoute, useRouter } from "vue-router";
 	import axios from "@/axios";
-	import { computed } from "vue";
-	import { ref } from "@vue/reactivity";
-	import Toast from "@/components/Toast.vue";
+	import { ref, computed } from "vue";
 	import { useToast } from "@/composables/toast";
 	import Input from "@/components/Input.vue";
 	import _ from "lodash";
 	export default {
 		components: {
-			Toast,
 			Input,
 		},
 		props: {
@@ -71,7 +94,6 @@
 					})
 					.catch((error) => {
 						console.log(error);
-						triggerToast("일시적으로 오류가 발생하였습니다 잠시후 다시 이용해주세요", "danger");
 						loading.value = false;
 					});
 			};
@@ -96,7 +118,8 @@
 					},
 				})
 					.then((res) => {
-						const message = ` ${props.editing ? "등록에" : "수정에"} 성공 하였습니다`;
+						console.log(props.editing);
+						const message = `${props.editing ? "수정에" : "등록에"} 성공 하였습니다`;
 						triggerToast(message);
 						if (!props.editing) {
 							router.push({
@@ -128,7 +151,6 @@
 			return {
 				subjectError,
 				toastAlertType,
-				triggerToast,
 				todoUpdated,
 				todo,
 				loading,
